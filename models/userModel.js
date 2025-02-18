@@ -22,6 +22,14 @@ const userSchema = new mongoose.Schema({
     enum: ["admin", "user"],
     default: "user",
   },
+  last_password_update: {
+    type: Date,
+    default: Date.now(),
+  },
+  created_at: {
+    type: Date,
+    default: Date.now(),
+  },
 });
 const User = mongoose.model("User", userSchema);
 module.exports = User;
