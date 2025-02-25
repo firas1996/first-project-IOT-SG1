@@ -39,7 +39,43 @@ exports.deleteUser = async (req, res) => {
       return res.status(404).json({ message: "user not found !!" });
     }
     res.status(204).json({
-      message: "User updated !!!",
+      message: "User Deleted !!!",
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: "Fail !!!",
+      error: error,
+    });
+  }
+};
+
+exports.getUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "user not found !!" });
+    }
+    res.status(200).json({
+      message: "User Fetched !!!",
+      data: { user },
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: "Fail !!!",
+      error: error,
+    });
+  }
+};
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    const user = await User.find();
+    if (!user) {
+      return res.status(404).json({ message: "user not found !!" });
+    }
+    res.status(200).json({
+      message: "Users Fetched !!!",
+      data: { user },
     });
   } catch (error) {
     res.status(400).json({
