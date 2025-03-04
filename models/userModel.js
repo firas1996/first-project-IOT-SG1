@@ -41,5 +41,12 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.compairPass = async function (password, cPass) {
   return await bcryptjs.compare(password, cPass);
 };
+
+userSchema.methods.validToken = function (JWTDate) {
+  // console.log(JWTDate);
+  // console.log(parseInt(this.last_password_update.getTime() / 1000));
+  return JWTDate > parseInt(this.last_password_update.getTime() / 1000);
+};
+
 const User = mongoose.model("User", userSchema);
 module.exports = User;

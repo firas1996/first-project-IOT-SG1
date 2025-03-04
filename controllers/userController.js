@@ -1,17 +1,42 @@
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
+const { promisify } = require("util");
 
 exports.protectionMW = async (req, res, next) => {
   try {
     let token;
     // 1) bech nthabat ken el user 3andou token or not
-
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
+    ) {
+      token = req.headers.authorization.split(" ")[1];
+    }
+    if (!token) {
+      return res.status(401).json({
+        message: "You are not logged in !!!",
+      });
+    }
     // 2) bech nchouf si el token is valid or not
-
+    const verifiedToken = await promisify(jwt.verify)(
+      token,
+      process.env.SECRET_KEY
+    );
+    // console.log(verifiedToken);
     // 3) bech nchouf si el user moula el token still exist or not
-
+    const user = await User.findById(verifiedToken.id);
+    if (!user) {
+      return res.status(404).json({
+        message: "This user no longer exists !!!",
+      });
+    }
     // 4) si el token tsan3et 9bal ou bien ba3d last password update
-
+    if (!user.validToken(verifiedToken.iat)) {
+      return res.status(401).json({
+        message: "This token is no longer valid !!!",
+      });
+    }
+    req.role = user.role;
     return next();
   } catch (error) {
     res.status(400).json({
@@ -20,6 +45,8 @@ exports.protectionMW = async (req, res, next) => {
     });
   }
 };
+
+exports.canDoThis = () => {};
 
 exports.signup = async (req, res) => {
   try {

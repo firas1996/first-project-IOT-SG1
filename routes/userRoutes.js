@@ -7,6 +7,8 @@ const {
   getAllUsers,
   signup,
   signIn,
+  protectionMW,
+  canDoThis,
 } = require("../controllers/userController");
 const Routes = express.Router();
 
@@ -16,6 +18,6 @@ Routes.route("/").post(createUser);
 Routes.route("/:id").patch(updateUser);
 Routes.route("/:id").delete(deleteUser);
 Routes.route("/:id").get(getUser);
-Routes.route("/").get(getAllUsers);
+Routes.route("/").get([protectionMW, canDoThis("admin"), getAllUsers]);
 
 module.exports = Routes;
