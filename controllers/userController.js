@@ -1,6 +1,26 @@
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 
+exports.protectionMW = async (req, res, next) => {
+  try {
+    let token;
+    // 1) bech nthabat ken el user 3andou token or not
+
+    // 2) bech nchouf si el token is valid or not
+
+    // 3) bech nchouf si el user moula el token still exist or not
+
+    // 4) si el token tsan3et 9bal ou bien ba3d last password update
+
+    return next();
+  } catch (error) {
+    res.status(400).json({
+      message: "Fail !!!",
+      error: error,
+    });
+  }
+};
+
 exports.signup = async (req, res) => {
   try {
     // Solution 1 :
