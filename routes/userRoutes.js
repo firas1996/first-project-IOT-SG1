@@ -18,6 +18,6 @@ Routes.route("/").post(createUser);
 Routes.route("/:id").patch(updateUser);
 Routes.route("/:id").delete(deleteUser);
 Routes.route("/:id").get(getUser);
-Routes.route("/").get([protectionMW, canDoThis("admin"), getAllUsers]);
+Routes.route("/").get(getAllUsers);
 
 module.exports = Routes;
